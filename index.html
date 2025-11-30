@@ -318,10 +318,12 @@
             ctx.moveTo(coords.x, coords.y);
             
             if (currentTool === 'pencil') {
+                ctx.globalCompositeOperation = 'source-over';
                 ctx.strokeStyle = '#333';
                 ctx.lineWidth = 2;
             } else {
-                ctx.strokeStyle = 'white';
+                // Ластик - используем destination-out для удаления только нарисованного
+                ctx.globalCompositeOperation = 'destination-out';
                 ctx.lineWidth = 20;
             }
         }
