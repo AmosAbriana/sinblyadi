@@ -145,7 +145,7 @@
             font-size: 16px;
             color: #333;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
         .day.other-month {
@@ -175,8 +175,9 @@
             width: 100%;
             height: 100%;
             pointer-events: auto;
-            z-index: 10;
+            z-index: 3;
             border-radius: 10px;
+            background: transparent;
         }
     </style>
 </head>
@@ -236,7 +237,8 @@
 
         // Сохранить рисунок
         function saveDrawing() {
-            const dataURL = canvas.toDataURL();
+            // Сохраняем с прозрачностью (PNG формат)
+            const dataURL = canvas.toDataURL('image/png');
             const key = getStorageKey();
             localStorage.setItem(key, dataURL);
         }
@@ -275,6 +277,9 @@
                 // Настройка стилей рисования
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
+                
+                // Убедиться, что canvas прозрачный
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
                 
                 // Загрузить сохраненный рисунок
                 loadDrawing();
@@ -322,7 +327,8 @@
                 ctx.strokeStyle = '#333';
                 ctx.lineWidth = 2;
             } else {
-                // Ластик - используем destination-out для удаления только нарисованного
+                // Ластик - используем destination-out для удаления только нарисованного на canvas
+                // Это удалит только пиксели, нарисованные на canvas, не затрагивая элементы под ним
                 ctx.globalCompositeOperation = 'destination-out';
                 ctx.lineWidth = 20;
             }
